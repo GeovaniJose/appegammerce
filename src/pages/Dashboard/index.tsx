@@ -1,6 +1,12 @@
 import React from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
+import FloatingCart from '../../components/FloatingCart';
+
+import gameImg1 from '../../assets/call-of-duty-infinite-warfare.png';
+import gameImg2 from '../../assets/terra-media-sombras-de-mordor.png';
+import CartIcon from '../../assets/cart-icon.svg';
+
 import {
   Container,
   ProductsContainer,
@@ -15,10 +21,6 @@ import {
   ScoreContainer,
   ProductScore,
 } from './styles';
-
-import gameImg1 from '../../assets/call-of-duty-infinite-warfare.png';
-import gameImg2 from '../../assets/terra-media-sombras-de-mordor.png';
-import CartIcon from '../../assets/cart-icon.svg';
 
 const Dashboard: React.FC = () => {
   return (
@@ -66,6 +68,7 @@ const Dashboard: React.FC = () => {
           </ProductCard>
         </ProductsList>
       </ProductsContainer>
+      <FloatingCart />
     </Container>
   );
 };
