@@ -14,7 +14,19 @@ const AppRoutes: React.FC = () => (
     }}
     initialRouteName="Dashboard"
   >
-    <App.Screen name="Dashboard" component={Dashboard} />
+    <App.Screen
+      options={{
+        headerTransparent: true,
+        headerTitle: 'e-Gammerce',
+        headerStyle: {
+          height: 72,
+        },
+        headerTintColor: '#fff',
+        headerTitleAlign: 'center',
+      }}
+      name="Dashboard"
+      component={Dashboard}
+    />
     <App.Screen name="Cart" component={Cart} />
   </App.Navigator>
 );
