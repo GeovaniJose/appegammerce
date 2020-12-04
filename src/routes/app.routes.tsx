@@ -1,6 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import FeatherIcon from 'react-native-vector-icons/Feather';
+
 import Dashboard from '../pages/Dashboard';
 import Cart from '../pages/Cart';
 
@@ -10,7 +12,7 @@ const AppRoutes: React.FC = () => (
   <App.Navigator
     screenOptions={{
       headerShown: true,
-      cardStyle: { backgroundColor: 'rgba(3,3,3,0.9)' },
+      cardStyle: { backgroundColor: '#282c36' },
     }}
     initialRouteName="Dashboard"
   >
@@ -18,16 +20,36 @@ const AppRoutes: React.FC = () => (
       options={{
         headerTransparent: true,
         headerTitle: 'e-Gammerce',
+        headerTintColor: '#fff',
+        headerTitleAlign: 'center',
         headerStyle: {
           height: 72,
         },
-        headerTintColor: '#fff',
-        headerTitleAlign: 'center',
       }}
       name="Dashboard"
       component={Dashboard}
     />
-    <App.Screen name="Cart" component={Cart} />
+    <App.Screen
+      options={{
+        headerTransparent: true,
+        headerTitle: 'e-Gammerce',
+        headerTintColor: '#fff',
+        headerTitleAlign: 'center',
+        headerStyle: {
+          height: 72,
+        },
+
+        headerBackTitleVisible: false,
+        headerLeftContainerStyle: {
+          marginLeft: 20,
+        },
+        headerBackImage: () => (
+          <FeatherIcon name="chevron-left" size={24} color="#fff" />
+        ),
+      }}
+      name="Cart"
+      component={Cart}
+    />
   </App.Navigator>
 );
 
