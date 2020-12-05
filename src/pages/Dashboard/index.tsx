@@ -13,6 +13,8 @@ import CartIcon from '../../assets/cart-icon.svg';
 
 import {
   Container,
+  FilterContainer,
+  FilterItem,
   ProductsContainer,
   ProductsList,
   ProductCard,
@@ -34,10 +36,21 @@ interface Product {
   image: string;
 }
 
+interface FilterOptions {
+  price: boolean;
+  score: boolean;
+  name: boolean;
+}
+
 const Dashboard: React.FC = () => {
   const { addToCart } = useCart();
 
   const [products, setProducts] = useState<Product[]>([]);
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+    price: false,
+    score: false,
+    name: false,
+  });
 
   useEffect(() => {
     const formattedProducts = data.map(product => ({
@@ -52,11 +65,67 @@ const Dashboard: React.FC = () => {
     addToCart(item);
   }
 
+  function handleOrderProductsByPrice() {
+    setProducts(state => [...state.sort((pA, pB) => pA.price - pB.price)]);
+    setFilterOptions({ price: true, score: false, name: false });
+  }
+
+  function handleOrderProductsByScore() {
+    setProducts(state => [...state.sort((pA, pB) => pB.score - pA.score)]);
+    setFilterOptions({ price: false, score: true, name: false });
+  }
+
+  function handleOrderProductsByName() {
+    setProducts(state => [
+      ...state.sort((pA, pB) => {
+        if (pA.name.toLocaleLowerCase() < pB.name.toLocaleLowerCase())
+          return -1;
+        if (pA.name.toLocaleLowerCase() > pB.name.toLocaleLowerCase()) return 1;
+        return 0;
+      }),
+    ]);
+    setFilterOptions({ price: false, score: false, name: true });
+  }
+
   return (
     <Container>
+      <FilterContainer>
+        <FilterItem
+          isSelected={filterOptions.price}
+          onPress={() => handleOrderProductsByPrice()}
+        >
+          <FeatherIcon
+            size={16}
+            name="dollar-sign"
+            color={filterOptions.price ? '#f16e4a' : '#777'}
+          />
+        </FilterItem>
+        <FilterItem
+          isSelected={filterOptions.score}
+          onPress={() => handleOrderProductsByScore()}
+        >
+          <FeatherIcon
+            size={16}
+            name="star"
+            color={filterOptions.score ? '#f16e4a' : '#777'}
+          />
+        </FilterItem>
+        <FilterItem
+          isSelected={filterOptions.name}
+          onPress={() => handleOrderProductsByName()}
+        >
+          <FeatherIcon
+            size={16}
+            name="bold"
+            color={filterOptions.name ? '#f16e4a' : '#777'}
+          />
+        </FilterItem>
+      </FilterContainer>
+
       <ProductsContainer>
         <ProductsList
           data={products}
+          extraData={products}
           keyExtractor={item => item.id.toString()}
           ListFooterComponent={<View />}
           ListFooterComponentStyle={{

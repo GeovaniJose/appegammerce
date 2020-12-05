@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { FlatList } from 'react-native';
 
 interface Product {
@@ -9,15 +9,38 @@ interface Product {
   image: string;
 }
 
+interface FilterItemProps {
+  isSelected: boolean;
+}
+
 export const Container = styled.SafeAreaView`
   flex: 1;
   align-items: center;
 `;
 
+export const FilterContainer = styled.View`
+  flex-direction: row;
+  margin-top: 56px;
+`;
+
+export const FilterItem = styled.TouchableOpacity<FilterItemProps>`
+  flex: 1;
+  align-items: center;
+  padding-bottom: 10px;
+  /* background-color: #3d3d4d; */
+  color: #fff;
+
+  ${props =>
+    props.isSelected &&
+    css`
+      /* border-bottom-width: 0.4px;
+      border-bottom-color: #f16e4a; */
+    `}
+`;
+
 export const ProductsContainer = styled.View`
   flex: 1;
   flex-direction: row;
-  margin-top: 56px;
   border-radius: 5px;
 `;
 
