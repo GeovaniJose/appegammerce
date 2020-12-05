@@ -22,9 +22,6 @@ const AppRoutes: React.FC = () => (
         headerTitle: 'e-Gammerce',
         headerTintColor: '#fff',
         headerTitleAlign: 'center',
-        headerStyle: {
-          height: 72,
-        },
       }}
       name="Dashboard"
       component={Dashboard}
@@ -35,9 +32,6 @@ const AppRoutes: React.FC = () => (
         headerTitle: 'e-Gammerce',
         headerTintColor: '#fff',
         headerTitleAlign: 'center',
-        headerStyle: {
-          height: 72,
-        },
 
         headerBackTitleVisible: false,
         headerLeftContainerStyle: {

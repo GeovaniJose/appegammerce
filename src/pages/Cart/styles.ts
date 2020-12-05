@@ -13,7 +13,7 @@ interface Product {
 export const Container = styled.SafeAreaView`
   flex: 1;
   align-items: center;
-  margin-top: 72px;
+  margin-top: 56px;
 `;
 
 export const ProductsContainer = styled.View`
@@ -33,7 +33,7 @@ export const ProductsList = styled(
 
 export const ProductCard = styled.View`
   flex-direction: row;
-  padding: 16px 16px;
+  padding: 12px 12px;
   margin: 60px 8px 8px;
   border-radius: 16px;
   background: #fff;

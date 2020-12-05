@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { useCart } from '../../hooks/cart';
 import formatValue from '../../utils/formatValue';
+import getImageURI from '../../utils/getImageURI';
 import data from '../../../products.json';
 
 import FloatingCart from '../../components/FloatingCart';
@@ -41,7 +42,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const formattedProducts = data.map(product => ({
       ...product,
-      image: `../../assets/${product.image}`,
+      image: Image.resolveAssetSource(getImageURI(product.image)).uri,
     }));
 
     setProducts(formattedProducts);
