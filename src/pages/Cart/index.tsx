@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import { View } from 'react-native';
+
+import { useCart } from '../../hooks/cart';
+import formatValue from '../../utils/formatValue';
+
+import CartIcon from '../../assets/cart-icon.svg';
 
 import {
   Container,
@@ -21,73 +27,93 @@ import {
   SubtotalValue,
 } from './styles';
 
-import gameImg1 from '../../assets/call-of-duty-infinite-warfare.png';
-import gameImg2 from '../../assets/terra-media-sombras-de-mordor.png';
-import CartIcon from '../../assets/cart-icon.svg';
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  score: number;
+  image: string;
+  quantity: number;
+}
 
 const Cart: React.FC = () => {
+  const { increment, decrement, products } = useCart();
+
+  function handleIncrement(id: number): void {
+    increment(id);
+  }
+
+  function handleDecrement(id: number): void {
+    decrement(id);
+  }
+
+  const cartTotal = useMemo(() => {
+    const total = products.reduce(
+      (accumulator, product) => accumulator + product.quantity * product.price,
+      0,
+    );
+
+    return formatValue(total);
+  }, [products]);
+
+  const totalItensInCart = useMemo(() => {
+    const totalItens = products.reduce(
+      (accumulator, product) => accumulator + product.quantity,
+      0,
+    );
+
+    return totalItens;
+  }, [products]);
+
   return (
     <Container>
       <ProductsContainer>
-        <ProductsList>
-          <ProductCard>
-            <ProductImage source={gameImg1} />
+        <ProductsList
+          data={products}
+          keyExtractor={item => item.id.toString()}
+          ListFooterComponent={<View />}
+          ListFooterComponentStyle={{
+            height: 80,
+          }}
+          renderItem={({ item }) => (
+            <ProductCard>
+              <ProductImage source={{ uri: item.image }} />
 
-            <ProductDetails>
-              <ProductTitle>Call of Duty Infinite Warfare</ProductTitle>
+              <ProductDetails>
+                <ProductTitle>{item.name}</ProductTitle>
 
-              <ProductPriceContainer>
-                <ProductQuantity>12x</ProductQuantity>
-                <ProductSinglePrice>R$200,00</ProductSinglePrice>
-              </ProductPriceContainer>
+                <ProductPriceContainer>
+                  <ProductQuantity>{`${item.quantity}x`}</ProductQuantity>
+                  <ProductSinglePrice>
+                    {formatValue(item.price)}
+                  </ProductSinglePrice>
+                </ProductPriceContainer>
 
-              <ProductTotalPrice>R$400,00</ProductTotalPrice>
-            </ProductDetails>
+                <ProductTotalPrice>
+                  {formatValue(item.price * item.quantity)}
+                </ProductTotalPrice>
+              </ProductDetails>
 
-            <ActionContainer>
-              <ActionButton>
-                <FeatherIcon name="plus" color="#f16e4a" size={16} />
-              </ActionButton>
+              <ActionContainer>
+                <ActionButton onPress={() => handleIncrement(item.id)}>
+                  <FeatherIcon name="plus" color="#f16e4a" size={16} />
+                </ActionButton>
 
-              <ActionButton>
-                <FeatherIcon name="minus" color="#f16e4a" size={16} />
-              </ActionButton>
-            </ActionContainer>
-          </ProductCard>
-
-          <ProductCard>
-            <ProductImage source={gameImg2} />
-
-            <ProductDetails>
-              <ProductTitle>Terra Media Sombras de Mordor</ProductTitle>
-
-              <ProductPriceContainer>
-                <ProductQuantity>12x</ProductQuantity>
-                <ProductSinglePrice>R$200,00</ProductSinglePrice>
-              </ProductPriceContainer>
-
-              <ProductTotalPrice>R$150,00</ProductTotalPrice>
-            </ProductDetails>
-
-            <ActionContainer>
-              <ActionButton>
-                <FeatherIcon name="plus" color="#f16e4a" size={16} />
-              </ActionButton>
-
-              <ActionButton>
-                <FeatherIcon name="minus" color="#f16e4a" size={16} />
-              </ActionButton>
-            </ActionContainer>
-          </ProductCard>
-        </ProductsList>
+                <ActionButton onPress={() => handleDecrement(item.id)}>
+                  <FeatherIcon name="minus" color="#f16e4a" size={16} />
+                </ActionButton>
+              </ActionContainer>
+            </ProductCard>
+          )}
+        />
       </ProductsContainer>
 
       <Frete>*Frete grátis para compras acima de R$250,00</Frete>
 
       <TotalProductsContainer>
         <CartIcon width={24} height={24} color="#fff" />
-        <TotalProductsText>24 itens</TotalProductsText>
-        <SubtotalValue>R$15.000,00</SubtotalValue>
+        <TotalProductsText>{`${totalItensInCart} itens`}</TotalProductsText>
+        <SubtotalValue>{cartTotal}</SubtotalValue>
       </TotalProductsContainer>
     </Container>
   );

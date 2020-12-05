@@ -20,8 +20,8 @@ interface Product {
 interface CartContextData {
   products: Product[];
   addToCart(item: Omit<Product, 'quantity'>): void;
-  increment(id: string): void;
-  decrement(id: string): void;
+  increment(id: number): void;
+  decrement(id: number): void;
 }
 
 const CartContext = createContext<CartContextData | null>(null);
@@ -31,7 +31,6 @@ const CartProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     async function loadProducts(): Promise<void> {
-      // TODO LOAD ITEMS FROM ASYNC STORAGE
       const storagedProducts = await AsyncStorage.getItem(
         '@GoMarketplace:product',
       );
