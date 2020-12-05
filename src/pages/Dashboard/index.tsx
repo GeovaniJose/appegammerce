@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import FloatingCart from '../../components/FloatingCart';
 
-import gameImg1 from '../../assets/call-of-duty-infinite-warfare.png';
-import gameImg2 from '../../assets/terra-media-sombras-de-mordor.png';
 import CartIcon from '../../assets/cart-icon.svg';
+
+import data from '../../../products.json';
 
 import {
   Container,
@@ -22,51 +23,58 @@ import {
   ProductScore,
 } from './styles';
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  score: number;
+  image: string;
+}
+
 const Dashboard: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const formattedProducts = data.map(product => ({
+      ...product,
+      image: `../../assets/${product.image}`,
+    }));
+
+    setProducts(formattedProducts);
+  }, []);
+
   return (
     <Container>
       <ProductsContainer>
-        <ProductsList>
-          <ProductCard>
-            <ProductImage source={gameImg1} />
+        <ProductsList
+          data={products}
+          keyExtractor={item => item.id.toString()}
+          ListFooterComponent={<View />}
+          ListFooterComponentStyle={{
+            height: 80,
+          }}
+          renderItem={({ item }) => (
+            <ProductCard>
+              <ProductImage source={{ uri: item.image }} />
 
-            <ProductDetails>
-              <ProductTitle>Call of Duty Infinite Warfare</ProductTitle>
+              <ProductDetails>
+                <ProductTitle>{item.name}</ProductTitle>
 
-              <ScoreContainer>
-                <FeatherIcon size={14} name="star" color="#fd993b" />
-                <ProductScore>200</ProductScore>
-              </ScoreContainer>
+                <ScoreContainer>
+                  <FeatherIcon size={14} name="star" color="#fd993b" />
+                  <ProductScore>{item.score}</ProductScore>
+                </ScoreContainer>
 
-              <PriceContainer>
-                <ProductPrice>R$400,00</ProductPrice>
-                <ProductButton>
-                  <CartIcon width={24} height={24} color="#3d3d4d" />
-                </ProductButton>
-              </PriceContainer>
-            </ProductDetails>
-          </ProductCard>
-
-          <ProductCard>
-            <ProductImage source={gameImg2} />
-
-            <ProductDetails>
-              <ProductTitle>Terra Media Sombras de Mordor</ProductTitle>
-
-              <ScoreContainer>
-                <FeatherIcon size={14} name="star" color="#fd993b" />
-                <ProductScore>200</ProductScore>
-              </ScoreContainer>
-
-              <PriceContainer>
-                <ProductPrice>R$150,00</ProductPrice>
-                <ProductButton>
-                  <CartIcon width={24} height={24} color="#3d3d4d" />
-                </ProductButton>
-              </PriceContainer>
-            </ProductDetails>
-          </ProductCard>
-        </ProductsList>
+                <PriceContainer>
+                  <ProductPrice>{item.price}</ProductPrice>
+                  <ProductButton>
+                    <CartIcon width={24} height={24} color="#3d3d4d" />
+                  </ProductButton>
+                </PriceContainer>
+              </ProductDetails>
+            </ProductCard>
+          )}
+        />
       </ProductsContainer>
       <FloatingCart />
     </Container>

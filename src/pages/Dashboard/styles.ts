@@ -1,4 +1,13 @@
 import styled from 'styled-components/native';
+import { FlatList } from 'react-native';
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  score: number;
+  image: string;
+}
 
 export const Container = styled.SafeAreaView`
   flex: 1;
@@ -12,7 +21,11 @@ export const ProductsContainer = styled.View`
   border-radius: 5px;
 `;
 
-export const ProductsList = styled.View`
+export const ProductsList = styled(
+  FlatList as new () => FlatList<Product>,
+).attrs({
+  numColumns: 1,
+})`
   flex: 1;
   padding: 0 10px;
 `;
