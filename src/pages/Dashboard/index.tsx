@@ -3,10 +3,10 @@ import { View } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import FloatingCart from '../../components/FloatingCart';
+import formatValue from '../../utils/formatValue';
+import data from '../../../products.json';
 
 import CartIcon from '../../assets/cart-icon.svg';
-
-import data from '../../../products.json';
 
 import {
   Container,
@@ -66,7 +66,7 @@ const Dashboard: React.FC = () => {
                 </ScoreContainer>
 
                 <PriceContainer>
-                  <ProductPrice>{item.price}</ProductPrice>
+                  <ProductPrice>{formatValue(item.price)}</ProductPrice>
                   <ProductButton>
                     <CartIcon width={24} height={24} color="#3d3d4d" />
                   </ProductButton>
