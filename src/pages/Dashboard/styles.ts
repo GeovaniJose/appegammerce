@@ -46,6 +46,8 @@ export const ProductsList = styled(
 `;
 
 export const ProductCard = styled.View`
+  max-width: 600px;
+  align-self: center;
   flex-direction: row;
   padding: 12px 12px;
   margin: 60px 8px 8px;
