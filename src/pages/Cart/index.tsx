@@ -27,15 +27,6 @@ import {
   SubtotalValue,
 } from './styles';
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  score: number;
-  image: string;
-  quantity: number;
-}
-
 const Cart: React.FC = () => {
   const { increment, decrement, products } = useCart();
 
