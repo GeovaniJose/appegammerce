@@ -32,7 +32,7 @@ const CartProvider: React.FC = ({ children }) => {
   useEffect(() => {
     async function loadProducts(): Promise<void> {
       const storagedProducts = await AsyncStorage.getItem(
-        '@GoMarketplace:product',
+        '@e-Gammerce:product',
       );
 
       if (storagedProducts) {
@@ -63,7 +63,7 @@ const CartProvider: React.FC = ({ children }) => {
       }
 
       await AsyncStorage.setItem(
-        '@GoMarketplace:product',
+        '@e-Gammerce:product',
         JSON.stringify(products),
       );
     },
@@ -72,17 +72,17 @@ const CartProvider: React.FC = ({ children }) => {
 
   const increment = useCallback(
     async id => {
-      setProducts(state =>
-        state.map(product =>
-          product.id === id
-            ? { ...product, quantity: product.quantity + 1 }
-            : product,
-        ),
+      const incrementedProducts = products.map(product =>
+        product.id === id
+          ? { ...product, quantity: product.quantity + 1 }
+          : product,
       );
 
+      setProducts(incrementedProducts);
+
       await AsyncStorage.setItem(
-        '@GoMarketplace:product',
-        JSON.stringify(products),
+        '@e-Gammerce:product',
+        JSON.stringify(incrementedProducts),
       );
     },
     [products],
@@ -100,11 +100,15 @@ const CartProvider: React.FC = ({ children }) => {
         return product;
       });
 
-      setProducts(mappedProducts.filter(product => product.quantity > 0));
+      const filteredProducts = mappedProducts.filter(
+        product => product.quantity > 0,
+      );
+
+      setProducts(filteredProducts);
 
       await AsyncStorage.setItem(
-        '@GoMarketplace:product',
-        JSON.stringify(products),
+        '@e-Gammerce:product',
+        JSON.stringify(filteredProducts),
       );
     },
     [products],

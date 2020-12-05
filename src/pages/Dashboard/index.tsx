@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Image } from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
@@ -61,21 +61,24 @@ const Dashboard: React.FC = () => {
     setProducts(formattedProducts);
   }, []);
 
-  function handleAddToCart(item: Product): void {
-    addToCart(item);
-  }
+  const handleAddToCart = useCallback(
+    (item: Product): void => {
+      addToCart(item);
+    },
+    [addToCart],
+  );
 
-  function handleOrderProductsByPrice() {
+  const handleOrderProductsByPrice = useCallback(() => {
     setProducts(state => [...state.sort((pA, pB) => pA.price - pB.price)]);
     setFilterOptions({ price: true, score: false, name: false });
-  }
+  }, []);
 
-  function handleOrderProductsByScore() {
+  const handleOrderProductsByScore = useCallback(() => {
     setProducts(state => [...state.sort((pA, pB) => pB.score - pA.score)]);
     setFilterOptions({ price: false, score: true, name: false });
-  }
+  }, []);
 
-  function handleOrderProductsByName() {
+  const handleOrderProductsByName = useCallback(() => {
     setProducts(state => [
       ...state.sort((pA, pB) => {
         if (pA.name.toLocaleLowerCase() < pB.name.toLocaleLowerCase())
@@ -85,7 +88,7 @@ const Dashboard: React.FC = () => {
       }),
     ]);
     setFilterOptions({ price: false, score: false, name: true });
-  }
+  }, []);
 
   return (
     <Container>
