@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { View } from 'react-native';
 
@@ -6,6 +6,7 @@ import { useCart } from '../../hooks/cart';
 import formatValue from '../../utils/formatValue';
 
 import CartIcon from '../../assets/cart-icon.svg';
+import ArrowIcon from '../../assets/arrow-down-icon.svg';
 
 import {
   Container,
@@ -24,11 +25,17 @@ import {
   Frete,
   TotalProductsContainer,
   TotalProductsText,
-  SubtotalValue,
+  CheckoutButton,
+  CheckoutContainer,
+  IconContainer,
+  TotalValue,
+  FreteSubtotal,
 } from './styles';
 
 const Cart: React.FC = () => {
   const { increment, decrement, products } = useCart();
+
+  const [checkoutPressed, setCheckoutPressed] = useState(false);
 
   function handleIncrement(id: number): void {
     increment(id);
@@ -38,15 +45,6 @@ const Cart: React.FC = () => {
     decrement(id);
   }
 
-  const cartTotal = useMemo(() => {
-    const total = products.reduce(
-      (accumulator, product) => accumulator + product.quantity * product.price,
-      0,
-    );
-
-    return formatValue(total);
-  }, [products]);
-
   const totalItensInCart = useMemo(() => {
     const totalItens = products.reduce(
       (accumulator, product) => accumulator + product.quantity,
@@ -55,6 +53,25 @@ const Cart: React.FC = () => {
 
     return totalItens;
   }, [products]);
+
+  const cartSubTotal = useMemo(() => {
+    const subtotal = products.reduce(
+      (accumulator, product) => accumulator + product.quantity * product.price,
+      0,
+    );
+
+    return subtotal;
+  }, [products]);
+
+  const freteTotal = useMemo(() => {
+    return cartSubTotal > 250 ? 0 : totalItensInCart * 10;
+  }, [cartSubTotal, totalItensInCart]);
+
+  const cartTotal = useMemo(() => {
+    const total = cartSubTotal + freteTotal;
+
+    return total;
+  }, [freteTotal, cartSubTotal]);
 
   return (
     <Container>
@@ -104,7 +121,31 @@ const Cart: React.FC = () => {
       <TotalProductsContainer>
         <CartIcon width={24} height={24} color="#fff" />
         <TotalProductsText>{`${totalItensInCart} itens`}</TotalProductsText>
-        <SubtotalValue>{cartTotal}</SubtotalValue>
+        <CheckoutButton onPress={() => setCheckoutPressed(!checkoutPressed)}>
+          <CheckoutContainer>
+            {checkoutPressed ? (
+              <>
+                <FreteSubtotal>
+                  {`Subtotal ${formatValue(cartSubTotal)}`}
+                </FreteSubtotal>
+                <FreteSubtotal>
+                  {`Frete ${
+                    freteTotal > 0 ? formatValue(freteTotal) : 'grátis'
+                  }`}
+                </FreteSubtotal>
+                <FreteSubtotal>
+                  {`Total ${formatValue(cartTotal)}`}
+                </FreteSubtotal>
+              </>
+            ) : (
+              <TotalValue>{formatValue(cartTotal)}</TotalValue>
+            )}
+          </CheckoutContainer>
+
+          <IconContainer isPressed={checkoutPressed}>
+            <ArrowIcon width={10} height={10} color="#fff" />
+          </IconContainer>
+        </CheckoutButton>
       </TotalProductsContainer>
     </Container>
   );

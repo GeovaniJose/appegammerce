@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { FlatList } from 'react-native';
 
 interface Product {
@@ -27,15 +27,7 @@ export const FilterItem = styled.TouchableOpacity<FilterItemProps>`
   flex: 1;
   align-items: center;
   padding-bottom: 10px;
-  /* background-color: #3d3d4d; */
   color: #fff;
-
-  ${props =>
-    props.isSelected &&
-    css`
-      /* border-bottom-width: 0.4px;
-      border-bottom-color: #f16e4a; */
-    `}
 `;
 
 export const ProductsContainer = styled.View`

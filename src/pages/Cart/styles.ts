@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import { FlatList } from 'react-native';
 
 interface Product {
@@ -8,6 +8,10 @@ interface Product {
   score: number;
   image: string;
   quantity: number;
+}
+
+interface IconContainerProps {
+  isPressed: boolean;
 }
 
 export const Container = styled.SafeAreaView`
@@ -110,20 +114,44 @@ export const TotalProductsContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
+  padding: 0px 28px;
   background: #f16e4a;
 `;
 
 export const TotalProductsText = styled.Text`
   flex: 1;
   margin-left: 15px;
+  padding: 20px 0px;
   font-size: 16px;
   font-weight: bold;
   color: #fff;
 `;
 
-export const SubtotalValue = styled.Text`
+export const CheckoutButton = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const CheckoutContainer = styled.View``;
+
+export const IconContainer = styled.View<IconContainerProps>`
+  ${props =>
+    props.isPressed &&
+    css`
+      transform: rotate(180deg);
+    `}
+`;
+
+export const TotalValue = styled.Text`
+  margin-right: 6px;
   font-size: 16px;
   font-weight: bold;
+  color: #fff;
+`;
+
+export const FreteSubtotal = styled.Text`
+  margin-right: 6px;
+  font-size: 11px;
+  text-align: right;
   color: #fff;
 `;
